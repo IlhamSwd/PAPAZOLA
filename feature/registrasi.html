@@ -11,7 +11,7 @@
     <div class="row justify-content-center">
         <div class="col-md-6 form-container">
             <h2 class="text-center">Form Pemesanan</h2>
-            <form>
+            <form id="formPertama">
                 <div class="form-group">
                     <label for="name">Nama Lengkap</label>
                     <input type="text" class="form-control" id="name" placeholder="Masukkan nama lengkap" required>
@@ -31,38 +31,45 @@
                 <button type="submit" class="btn btn-primary btn-block">Daftar</button>
             </form>
         </div>
-        <div id="message" class="alert alert-success mt-3" style="display: none;"></div>
-        
     </div>
+    
     <style>
-
         body {
             background-image: url('https://i2.wp.com/blog.tripcetera.com/id/wp-content/uploads/2020/10/Danau-Toba-edited.jpg');
             background-size: cover;
             background-position: center;
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; 
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         }
         .form-container {
             background: rgba(213, 212, 212, 0.55);
             padding: 30px;
             border-radius: 10px;
             margin-top: 50px;
-            color: #020000; 
+            color: #020000;
         }
-        .btn-primary {
-            background-color: #007bff; 
-            border-color: #007bff; 
-    
-        }
-    </style>    
-
-
-    </div>
+    </style>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    const form = document.getElementById('formPertama');
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Mencegah form agar tidak dikirim secara default
+
+        // Ambil data dari form
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const address = document.getElementById('address').value;
+        const phone = document.getElementById('phone').value;
+
+        // Simpan data ke localStorage
+        localStorage.setItem('namaLengkap', name);
+        localStorage.setItem('email', email);
+        localStorage.setItem('alamat', address);
+        localStorage.setItem('telepon', phone);
+
+        // Redirect ke halaman kedua
+        window.location.href = 'form-design.html'; // Ganti dengan nama file HTML kedua
+    });
+</script>
 </body>
 </html>
-
