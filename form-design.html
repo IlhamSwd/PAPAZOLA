@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pesanan Tiket Paket Wisata</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-image: url('https://indonesia.tripcanvas.co/wp-content/uploads/2021/09/20-1-Pantai-Melasti-Nurruh-Haris-Indrayana.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+        .loading-spinner {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .loading-spinner.active {
+            display: flex;
+        }
+        .thank-you-message {
+            display: none;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .thank-you-message.active {
+            display: block;
+        }
+        .form-container {
+            background-color: rgba(111, 206, 243, 0.9); /* background with transparency */
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .receipt-preview {
+            display: none;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <!-- Form Pesanan -->
+        <div id="order-form" class="form-container">
+            <h2 class="text-center mb-4">Konfirmasi Pesanan Tiket Paket Wisata</h2>
+            <form id="pesananForm">
+                <!-- Informasi Pemesan -->
+                <div class="mb-3">
+                    <label for="namaPemesan" class="form-label">Nama Pemesan</label>
+                    <input type="text" class="form-control" id="namaPemesan" placeholder="Masukkan nama lengkap" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="emailPemesan" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="emailPemesan" placeholder="Masukkan email" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="nomorTelepon" class="form-label">Nomor Telepon</label>
+                    <input type="tel" class="form-control" id="nomorTelepon" placeholder="Masukkan nomor telepon" required>
+                </div>
+
+                <!-- Paket Wisata -->
+                <div class="mb-3">
+                    <label for="paketWisata" class="form-label">Pilih Paket Wisata</label>
+                    <select class="form-select" id="paketWisata" required>
+                        <option selected disabled value="">Pilih paket wisata</option>
+                        <option value="Paket A">Paket Wisata Gunung Bromo</option>
+                        <option value="Paket B">Paket Wisata Banda Naira</option>
+                        <option value="Paket C">Paket Wisata Raja Ampat</option>
+                        <option value="Paket D">Paket Wisata Labuan Bajo</option>
+                        <option value="Paket E">Paket Wisata Bali</option>
+                    </select>
+                </div>
+
+                <!-- Tanggal Keberangkatan -->
+                <div class="mb-3">
+                    <label for="tanggalBerangkat" class="form-label">Tanggal Keberangkatan</label>
+                    <input type="date" class="form-control" id="tanggalBerangkat" required>
+                </div>
+
+                <!-- Jumlah Tiket -->
+                <div class="mb-3">
+                    <label for="jumlahTiket" class="form-label">Jumlah Tiket</label>
+                    <input type="number" class="form-control" id="jumlahTiket" min="1" max="50" value="1" required>
+                </div>
+
+                <!-- Harga Total -->
+                <div class="mb-3">
+                    <label for="hargaTotal" class="form-label">Harga Total (IDR)</label>
+                    <input type="text" class="form-control" id="hargaTotal" placeholder="Total harga tiket" readonly>
+                </div>
+
+                <!-- Upload Bukti Pembayaran -->
+                <div class="mb-3">
+                    <label for="buktiPembayaran" class="form-label">Upload Bukti Pembayaran</label>
+                    <input type="file" class="form-control" id="buktiPembayaran" accept="image/*" required>
+                </div>
+
+                <!-- Preview Bukti Pembayaran -->
+                <div id="receiptPreview" class="receipt-preview">
+                    <label for="receiptPreview">Preview Bukti Pembayaran:</label>
+                    <img id="receiptImage" class="img-fluid" alt="Bukti Pembayaran Preview">
+                </div>
+
+                <!-- Tombol Konfirmasi -->
+                <button type="submit" class="btn btn-primary">Konfirmasi Pesanan</button>
+            </form>
+        </div>
+
+       <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <!-- Thank You Message -->
+        <div class="thank-you-message" id="thankYouMessage">
+            <h1>Terima Kasih!</h1>
+            <p>Pesanan tiket Anda sedang diproses. Kami akan segera mengirimkan detail ke email Anda.</p>
+            <a href="index.html" class="btn btn-success mt-3">Kembali ke Halaman Home</a>
+        </div>
+    </div> 
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Script untuk Menghitung Harga Total dan Proses Konfirmasi -->
+    <script>
+        const paketWisata = document.getElementById('paketWisata');
+        const jumlahTiket = document.getElementById('jumlahTiket');
+        const hargaTotal = document.getElementById('hargaTotal');
+        const pesananForm = document.getElementById('pesananForm');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const thankYouMessage = document.getElementById('thankYouMessage');
+        const orderForm = document.getElementById('order-form');
+        const buktiPembayaran = document.getElementById('buktiPembayaran');
+        const receiptPreview = document.getElementById('receiptPreview');
+        const receiptImage = document.getElementById('receiptImage');
+
+        // Constants for maximum file size and dimensions
+        const MAX_FILE_SIZE = 20 * 1024 * 1024; // 20MB
+        const MAX_WIDTH = 500; // Maximum width for preview
+        const MAX_HEIGHT = 300; // Maximum height for preview
+
+        const hargaPaket = {
+            "Paket A": 500000,
+            "Paket B": 750000,
+            "Paket C": 600000,
+            "Paket D": 700000,
+            "Paket E": 800000
+        };
+
+        function updateHargaTotal() {
+            const paket = paketWisata.value;
+            const jumlah = parseInt(jumlahTiket.value);
+            if (paket && jumlah) {
+                hargaTotal.value = hargaPaket[paket] * jumlah;
+            }
+        }
+
+        paketWisata.addEventListener('change', updateHargaTotal);
+        jumlahTiket.addEventListener('input', updateHargaTotal);
+
+        // Preview Bukti Pembayaran
+        buktiPembayaran.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            
+            // Check file size
+            if (file && file.size > MAX_FILE_SIZE) {
+                alert("Ukuran file terlalu besar. Harap unggah file yang lebih kecil dari 20MB.");
+                buktiPembayaran.value = ''; // Clear the input
+                receiptPreview.style.display = 'none'; // Hide the preview
+                return;
+            }
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = new Image();
+                    img.src = e.target.result;
+
+                    img.onload = function() {
+                        // Resize the image
+                        let width = img.width;
+                        let height = img.height;
+
+                        // Calculate the new dimensions
+                        if (width > MAX_WIDTH || height > MAX_HEIGHT) {
+                            const aspectRatio = width / height;
+
+                            if (aspectRatio > 1) {
+                                // Width is greater than height
+                                width = MAX_WIDTH;
+                                height = MAX_WIDTH / aspectRatio;
+                            } else {
+                                // Height is greater than width
+                                height = MAX_HEIGHT;
+                                width = MAX_HEIGHT * aspectRatio;
+                            }
+                        }
+
+                        // Set the resized image to the preview
+                        receiptImage.src = e.target.result;
+                        receiptImage.style.width = width + 'px';
+                        receiptImage.style.height = height + 'px';
+                        receiptPreview.style.display = 'block';
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+                // Event listener untuk konfirmasi pesanan
+                pesananForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            // Sembunyikan form dan tampilkan loading spinner
+            orderForm.style.display = 'none';
+            loadingSpinner.classList.add('active');
+
+            // Simulasikan proses loading selama 3 detik
+            setTimeout(function() {
+                // Sembunyikan loading spinner dan tampilkan ucapan terima kasih
+                loadingSpinner.classList.remove('active');
+                thankYouMessage.classList.add('active');
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
+
