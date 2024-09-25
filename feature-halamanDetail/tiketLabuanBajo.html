@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Detail Paket Wisata Labuan Bajo</title>
+    <style>
+        /* Body styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        /* Header styling dengan background image */
+        header {
+            padding: 10px; /* Kurangi padding */
+            text-align: left;
+            background-image: url('images/logo-pemandangan.jpg'); /* Gambar pemandangan */
+            background-size: cover; /* Gambar memenuhi area header */
+            background-position: center;
+            height: 120px; /* Kurangi tinggi header */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white; /* Warna teks menjadi putih */
+            transition: background-color 0.5s ease; /* Transisi untuk background */
+        }
+
+        /* Logo teks di header */
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: white;
+        }
+
+        /* Link di header */
+        header nav a {
+            text-decoration: none;
+            color: white;
+            padding: 5px; /* Kurangi padding */
+            font-size: 16px;
+        }
+
+        /* Container styling */
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Image styling */
+        .container img {
+            width: 400px;
+            border-radius: 10px;
+        }
+
+        /* Text styling */
+        .details {
+            width: 50%;
+            margin-left: 20px;
+        }
+
+        .details h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .details p {
+            font-size: 18px;
+            margin: 6px 0;
+        }
+
+        .details .price {
+            font-size: 20px;
+            color: #d9534f;
+        }
+
+        .details .duration {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .details ul {
+            list-style: disc;
+            margin-left: 20px;
+        }
+
+        .details button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .details button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Transisi warna background */
+        .bg-color-change {
+            background-color: #4caf50; 
+        }
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <h1>Wisata Indonesia</h1>
+        <nav>
+            <a href="#">Beranda</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <!-- Gambar Utama -->
+        <img src="https://e1.pxfuel.com/desktop-wallpaper/375/911/desktop-wallpaper-kenapa-labuan-bajo-dikenal-dengan-to-the-highest-of-highs-or-lowest-of-lows-labuan-bajo.jpg" alt="Paket Wisata Labuan Bajo">
+
+        <!-- Detail Paket Wisata -->
+        <div class="details">
+            <h2>Detail Paket Wisata Labuan Bajo</h2>
+            <p><strong>ID Tiket:</strong> 345678</p>
+            <p><strong>Deskripsi:</strong> Temukan keindahan alam Labuan Bajo dan Komodo, dengan pengalaman berlayar di sekitar pulau-pulau yang menakjubkan.</p>
+            <p class="price"><strong>Harga:</strong> Rp 5.000.000</p>
+            <p class="duration"><strong>Durasi:</strong> 4 Hari 3 Malam</p>
+            <h3>Fasilitas:</h3>
+            <ul>
+                <li>Transportasi Kapal</li>
+                <li>Hotel Bintang 3</li>
+                <li>Pemandu Wisata Lokal</li>
+                <li>Makan 3x sehari</li>
+            </ul>
+            <button>Pesan Tiket</button>
+        </div>
+    </div>
+
+    <script>
+        // Script untuk mengganti background header
+        function changeBackgroundColor() {
+            var header = document.getElementById('header');
+            header.classList.toggle('bg-color-change'); // Toggle untuk mengganti warna
+        }
+
+        // Simulasi perubahan warna background setelah 5 detik
+        setTimeout(changeBackgroundColor, 1000); // Ubah setelah 5 detik
+    </script>
+
+</body>
+</html>
